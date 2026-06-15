@@ -1,10 +1,10 @@
-# Tópico 01 — Serviços Críticos
+# Topic 01 — Critical Services
 
-**Categoria:** Redução de Superfície de Ataque
-**Risco para o usuário:** Xbox App e Fax param de funcionar. Telemetria desativada.
-**Risco de segurança (não aplicar):** MÉDIO — RemoteRegistry permite acesso remoto ao registro.
+**Category:** Attack Surface Reduction
+**Risk for user:** Xbox App and Fax stop working. Telemetry disabled.
+**Security risk (if not applied):** MEDIUM — RemoteRegistry allows remote registry access.
 
-**Chaves de Registro Afetadas:** Nenhuma (serviços apenas)
+**Affected Registry Keys:** None (services only)
 
 ---
 
@@ -45,5 +45,5 @@ foreach ($s in $services) {
 
 ## Remediation Hints
 
-- Se `Set-Service` retornar "Access Denied", tente `sc.exe config [nome] start= disabled` como alternativa.
-- Se o serviço não existir (ex: versão mais recente do Windows removeu XboxNetApiSvc), ignore silenciosamente e continue.
+- If `Set-Service` returns "Access Denied", try `sc.exe config [name] start= disabled` as an alternative.
+- If the service does not exist (e.g., newer Windows version removed XboxNetApiSvc), silently ignore and continue.

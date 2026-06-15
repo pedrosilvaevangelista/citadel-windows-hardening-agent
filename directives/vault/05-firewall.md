@@ -1,10 +1,10 @@
-# Tópico 05 — Firewall (Todos os Perfis)
+# Topic 05 — Firewall (All Profiles)
 
-**Categoria:** Controle de Tráfego de Rede
-**Risco para o usuário:** BAIXO — Pode bloquear apps locais sem regra configurada.
-**Risco de segurança (não aplicar):** CRÍTICO — Firewall desativado expõe portas a toda a rede.
+**Category:** Network Traffic Control
+**Risk for user:** LOW — May block local apps without a configured rule.
+**Security risk (if not applied):** CRITICAL — Disabled firewall exposes ports to the entire network.
 
-**Chaves de Registro Afetadas:** Nenhuma (gerenciado por cmdlets de firewall)
+**Affected Registry Keys:** None (managed by firewall cmdlets)
 
 ---
 
@@ -29,4 +29,4 @@ Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled False -ErrorActio
 
 ## Remediation Hints
 
-- Se `Set-NetFirewallProfile` falhar: use `netsh advfirewall set allprofiles state on` como alternativa.
+- If `Set-NetFirewallProfile` fails: use `netsh advfirewall set allprofiles state on` as an alternative.

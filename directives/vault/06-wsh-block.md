@@ -1,10 +1,10 @@
-# Tópico 06 — Bloquear WSH (.VBS / .JS)
+# Topic 06 — Block WSH (.VBS / .JS)
 
-**Categoria:** Controle de Execução de Scripts
-**Risco para o usuário:** ALTO — Instaladores e scripts de automação legados em VBScript ou JScript pararão de funcionar.
-**Risco de segurança (não aplicar):** ALTO — WSH é vetor clássico de malware via e-mail (ex: .vbs disfarçado).
+**Category:** Script Execution Control
+**Risk for user:** HIGH — Legacy installers and automation scripts in VBScript or JScript will stop working.
+**Security risk (if not applied):** HIGH — WSH is a classic malware vector via email (e.g., disguised .vbs).
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SOFTWARE\Microsoft\Windows Script Host\Settings` → `Enabled`
 
 ---
@@ -32,4 +32,4 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -
 
 ## Remediation Hints
 
-- Se a chave não existir e `New-Item` falhar: usar `reg add "HKLM\SOFTWARE\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 0 /f`.
+- If the key does not exist and `New-Item` fails: use `reg add "HKLM\SOFTWARE\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 0 /f`.

@@ -1,10 +1,10 @@
-# Tópico 03 — Controle de Windows Update
+# Topic 03 — Windows Update Control
 
-**Categoria:** Gerenciamento de Patches
-**Risco para o usuário:** MÉDIO — Requer disciplina para instalar atualizações manualmente.
-**Risco de segurança (não aplicar):** BAIXO — Auto-reboot pode causar perda de dados em trabalho crítico.
+**Category:** Patch Management
+**Risk for user:** MEDIUM — Requires discipline to install updates manually.
+**Security risk (if not applied):** LOW — Auto-reboot may cause data loss in critical work.
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU` → `AUOptions`, `NoAutoRebootWithLoggedOnUsers`
 
 ---
@@ -35,5 +35,5 @@ Remove-ItemProperty -Path $path -Name "NoAutoRebootWithLoggedOnUsers" -ErrorActi
 
 ## Remediation Hints
 
-- Se o caminho de registro não puder ser criado: verifique permissões em `HKLM:\SOFTWARE\Policies\Microsoft\Windows`. Tente `takeown` na chave pai.
-- Em máquinas de domínio, GPO do servidor pode sobrescrever esse valor. Avise o usuário que a configuração pode não persistir.
+- If the registry path cannot be created: check permissions on `HKLM:\SOFTWARE\Policies\Microsoft\Windows`. Try `takeown` on the parent key.
+- In domain machines, server GPO can overwrite this value. Warn the user that the configuration may not persist.

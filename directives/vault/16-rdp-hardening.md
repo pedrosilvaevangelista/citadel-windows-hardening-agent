@@ -1,14 +1,14 @@
-# Tópico 16 — Hardening de RDP (Remote Desktop)
+# Topic 16 — RDP Hardening (Remote Desktop)
 
-**Categoria:** Segurança de Acesso Remoto
-**Risco para o usuário:** MÉDIO — NLA forçado exige que o cliente RDP suporte autenticação de nível de rede (todos os clientes modernos suportam).
-**Risco de segurança (não aplicar):** CRÍTICO — RDP sem NLA é exposto a ataques de força bruta pré-autenticação e vulnerabilidades do tipo BlueKeep (CVE-2019-0708). Vetor MITRE ATT&CK T1021.001.
+**Category:** Remote Access Security
+**Risk for user:** MEDIUM — Forced NLA requires the RDP client to support Network Level Authentication (all modern clients do).
+**Security risk (if not applied):** CRITICAL — RDP without NLA is exposed to pre-authentication brute force attacks and vulnerabilities like BlueKeep (CVE-2019-0708). MITRE ATT&CK Vector T1021.001.
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server` → `fDenyTSConnections`
 - `HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp` → `UserAuthentication`
 
-> **Estratégia dupla:** Se RDP não for utilizado na máquina, desabilitar completamente. Se for necessário, forçar NLA e restringir acesso apenas ao grupo de usuários necessário.
+> **Dual Strategy:** If RDP is not used on the machine, completely disable it. If required, force NLA and restrict access only to the necessary user group.
 
 ---
 
@@ -18,7 +18,7 @@
 $rdpEnabled = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server" -ErrorAction SilentlyContinue).fDenyTSConnections
 $nla = (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -ErrorAction SilentlyContinue).UserAuthentication
 
-# SEGURO se: RDP desabilitado OU (RDP habilitado E NLA forçado)
+# SECURE if: RDP disabled OR (RDP enabled AND NLA forced)
 $rdpDisabled = $rdpEnabled -eq 1
 $rdpSecured = ($rdpEnabled -eq 0) -and ($nla -eq 1)
 return $rdpDisabled -or $rdpSecured
@@ -27,16 +27,16 @@ return $rdpDisabled -or $rdpSecured
 ## Apply
 
 ```powershell
-# Estratégia padrão: desabilitar RDP completamente
+# Default strategy: completely disable RDP
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 1 -Type DWord -ErrorAction Stop
 
-# Desabilitar também via Firewall
+# Also disable via Firewall
 Disable-NetFirewallRule -DisplayGroup "Remote Desktop" -ErrorAction SilentlyContinue
 
-# Forçar NLA mesmo com RDP desabilitado (defense in depth)
+# Force NLA even with RDP disabled (defense in depth)
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Value 1 -Type DWord -ErrorAction SilentlyContinue
 
-Write-Host "    RDP desabilitado. Se precisar de acesso remoto, use VPN + RDP restrito por IP." -ForegroundColor Cyan
+Write-Host "    RDP disabled. If you need remote access, use VPN + RDP restricted by IP." -ForegroundColor Cyan
 ```
 
 ## Rollback
@@ -48,6 +48,6 @@ Enable-NetFirewallRule -DisplayGroup "Remote Desktop" -ErrorAction SilentlyConti
 
 ## Remediation Hints
 
-- Se o usuário precisar de RDP ativo (ex: administração remota legítima): aplicar apenas o NLA sem desabilitar o serviço. Usar `Set-ItemProperty ... UserAuthentication -Value 1` e manter `fDenyTSConnections = 0`.
-- Complemento de segurança adicional: mudar a porta padrão do RDP de `3389` para uma porta não-padrão via `HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp` → `PortNumber`.
-- Verificar se o RDP está exposto externamente: `Get-NetFirewallRule -DisplayGroup "Remote Desktop" | Select-Object Enabled, Profile`.
+- If the user needs active RDP (e.g., legitimate remote administration): apply only NLA without disabling the service. Use `Set-ItemProperty ... UserAuthentication -Value 1` and keep `fDenyTSConnections = 0`.
+- Additional security complement: change the default RDP port from `3389` to a non-standard port via `HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp` → `PortNumber`.
+- Check if RDP is exposed externally: `Get-NetFirewallRule -DisplayGroup "Remote Desktop" | Select-Object Enabled, Profile`.

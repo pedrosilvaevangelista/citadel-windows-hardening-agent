@@ -1,10 +1,10 @@
-# Tópico 12 — Bloquear Telemetria do OS
+# Topic 12 — Block OS Telemetry
 
-**Categoria:** Privacidade
-**Risco para o usuário:** BAIXO — Pode impedir participação no Windows Insider Program.
-**Risco de segurança (não aplicar):** BAIXO/MÉDIO — Dados de diagnóstico são enviados para a Microsoft.
+**Category:** Privacy
+**Risk for user:** LOW — May prevent participation in the Windows Insider Program.
+**Security risk (if not applied):** LOW/MEDIUM — Diagnostic data is sent to Microsoft.
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection` → `AllowTelemetry`
 
 ---
@@ -23,7 +23,7 @@ $path = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
 if (!(Test-Path $path)) { New-Item -Path $path -Force | Out-Null }
 Set-ItemProperty -Path $path -Name "AllowTelemetry" -Value 0 -ErrorAction Stop
 
-# Bloquear também via serviço DiagTrack (complementar ao Tópico 1)
+# Also block via DiagTrack service (complementary to Topic 1)
 Stop-Service -Name "DiagTrack" -Force -ErrorAction SilentlyContinue
 Set-Service -Name "DiagTrack" -StartupType Disabled -ErrorAction SilentlyContinue
 ```
@@ -37,4 +37,4 @@ Set-Service -Name "DiagTrack" -StartupType Automatic -ErrorAction SilentlyContin
 
 ## Remediation Hints
 
-- Em edições **Windows 10 Home**, o valor `0` pode ser ignorado pelo sistema — o mínimo efetivo é `1` (Básico). Se o Check sempre retornar falso mesmo após o Apply, avise o usuário que a edição Home limita esse controle.
+- In **Windows 10 Home** editions, the value `0` may be ignored by the system — the effective minimum is `1` (Basic). If the Check always returns false even after Apply, warn the user that the Home edition limits this control.

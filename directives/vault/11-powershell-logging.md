@@ -1,10 +1,10 @@
-# Tópico 11 — PowerShell Advanced Logging
+# Topic 11 — PowerShell Advanced Logging
 
-**Categoria:** Auditoria e Detecção de Intrusão
-**Risco para o usuário:** BAIXO — Aumenta tamanho dos logs no Event Viewer.
-**Risco de segurança (não aplicar):** ALTO — Sem logging, atividade maliciosa de PowerShell é invisível.
+**Category:** Auditing and Intrusion Detection
+**Risk for user:** LOW — Increases log size in the Event Viewer.
+**Security risk (if not applied):** HIGH — Without logging, malicious PowerShell activity is invisible.
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging` → `EnableScriptBlockLogging`
 - `HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging` → `EnableModuleLogging`
 - `HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames` → `*`
@@ -45,5 +45,5 @@ Remove-Item "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging"
 
 ## Remediation Hints
 
-- Se a criação de `New-Item` falhar em algum subpath: usar `reg add` para cada chave individualmente.
-- O nome do valor `"*"` em `ModuleNames` pode causar conflito com wildcards do PowerShell. Usar `New-ItemProperty` (já feito no Apply) em vez de `Set-ItemProperty`.
+- If `New-Item` creation fails in any subpath: use `reg add` for each key individually.
+- The value name `"*"` in `ModuleNames` can cause conflict with PowerShell wildcards. Use `New-ItemProperty` (already done in Apply) instead of `Set-ItemProperty`.

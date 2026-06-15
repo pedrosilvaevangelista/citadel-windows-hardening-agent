@@ -1,14 +1,14 @@
-# Tópico 14 — Proteção de Credenciais (WDigest / LSASS RunAsPPL)
+# Topic 14 — Credential Protection (WDigest / LSASS RunAsPPL)
 
-**Categoria:** Proteção Contra Credential Dumping
-**Risco para o usuário:** NENHUM — Mudança transparente, sem impacto em uso diário.
-**Risco de segurança (não aplicar):** CRÍTICO — Mimikatz extrai senhas em texto plano da memória LSASS em segundos. Vetor MITRE ATT&CK T1003.001.
+**Category:** Credential Dumping Protection
+**Risk for user:** NONE — Transparent change, no impact on daily use.
+**Security risk (if not applied):** CRITICAL — Mimikatz extracts plaintext passwords from LSASS memory in seconds. MITRE ATT&CK Vector T1003.001.
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest` → `UseLogonCredential`
 - `HKLM\SYSTEM\CurrentControlSet\Control\Lsa` → `RunAsPPL`
 
-> **Contexto:** WDigest armazena credenciais em texto claro no LSASS para compatibilidade com autenticação HTTP Digest. Desabilitá-lo força o LSASS a armazenar apenas hashes. RunAsPPL adiciona proteção ao processo LSASS como Protected Process Light, impedindo que processos não assinados (como Mimikatz) façam `OpenProcess` nele.
+> **Context:** WDigest stores credentials in plaintext in LSASS for compatibility with HTTP Digest authentication. Disabling it forces LSASS to store only hashes. RunAsPPL adds protection to the LSASS process as Protected Process Light, preventing unsigned processes (like Mimikatz) from calling `OpenProcess` on it.
 
 ---
 
@@ -23,15 +23,15 @@ return ($wdigest -eq 0) -and ($lsass -eq 1)
 ## Apply
 
 ```powershell
-# Desabilitar WDigest (impede armazenamento de senhas em texto claro)
+# Disable WDigest (prevents plaintext password storage)
 $wdigestPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest"
 if (!(Test-Path $wdigestPath)) { New-Item -Path $wdigestPath -Force | Out-Null }
 Set-ItemProperty -Path $wdigestPath -Name "UseLogonCredential" -Value 0 -Type DWord -ErrorAction Stop
 
-# Habilitar LSASS como Protected Process Light (RunAsPPL)
+# Enable LSASS as Protected Process Light (RunAsPPL)
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "RunAsPPL" -Value 1 -Type DWord -ErrorAction Stop
 
-Write-Host "    [!] RunAsPPL requer reboot para entrar em vigor." -ForegroundColor Yellow
+Write-Host "    [!] RunAsPPL requires a reboot to take effect." -ForegroundColor Yellow
 ```
 
 ## Rollback
@@ -43,6 +43,6 @@ Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "RunAs
 
 ## Remediation Hints
 
-- `RunAsPPL` só é efetivo após reboot — o Check de validação pós-apply deve informar que o status será confirmado no próximo boot.
-- Se `Set-ItemProperty` em `Lsa` retornar Access Denied: usar `reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v RunAsPPL /t REG_DWORD /d 1 /f`.
-- Em sistemas com Secure Boot + UEFI, o RunAsPPL pode ser configurado via Credential Guard (mais robusto). Para ambientes domésticos, o RunAsPPL via registro já é efetivo.
+- `RunAsPPL` is only effective after a reboot — the post-apply validation Check should inform that the status will be confirmed on the next boot.
+- If `Set-ItemProperty` on `Lsa` returns Access Denied: use `reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v RunAsPPL /t REG_DWORD /d 1 /f`.
+- On systems with Secure Boot + UEFI, RunAsPPL can be configured via Credential Guard (more robust). For home environments, RunAsPPL via registry is already effective.

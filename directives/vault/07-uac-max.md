@@ -1,10 +1,10 @@
-# Tópico 07 — UAC Nível Máximo
+# Topic 07 — Max UAC Level
 
-**Categoria:** Controle de Privilege Escalation
-**Risco para o usuário:** BAIXO — Mais prompts de permissão para ações administrativas.
-**Risco de segurança (não aplicar):** ALTO — UAC rebaixado permite elevação silenciosa de privilégio.
+**Category:** Privilege Escalation Control
+**Risk for user:** LOW — More permission prompts for administrative actions.
+**Security risk (if not applied):** HIGH — Lowered UAC allows silent privilege elevation.
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System` → `ConsentPromptBehaviorAdmin`, `PromptOnSecureDesktop`
 
 ---
@@ -31,4 +31,4 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
 
 ## Remediation Hints
 
-- Esta chave raramente falha pois sempre existe. Se falhar, provavelmente é problema de privilégio — verificar se o terminal está como Admin.
+- This key rarely fails because it always exists. If it fails, it is probably a privilege issue — verify if the terminal is running as Admin.

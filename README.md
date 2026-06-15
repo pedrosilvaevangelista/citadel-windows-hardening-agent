@@ -24,14 +24,14 @@ Using Citadel is designed to be interactive and heavily automated. You do not ru
    hardening
    ```
 4. **Review the Audit:** Citadel will autonomously run a Pre-Flight Check and a Read-Only Audit across 16+ security vectors. It will present a Markdown table with the vulnerabilities found.
-5. **Command the Fixes:** When Citadel asks *“Quais tópicos deseja aplicar?”*, simply reply with the numbers you want to fix (e.g., `1, 3, 14`).
+5. **Command the Fixes:** When Citadel asks *“Which topics do you want to apply?”*, simply reply with the numbers you want to fix (e.g., `1, 3, 14`).
 6. **Watch the Auto-Remediation:** Citadel will automatically backup the registry, apply the fixes, validate them, and use its cascading remediation strategies if any fix throws an `Access Denied` or similar error.
 
 ### 💾 Automatic Backups
 Before making any changes to the system registry during the **Apply** phase, Citadel automatically creates targeted `.reg` backups for the specific registry keys affected by the chosen topics. These backups are safely stored in the `backups/` directory and are timestamped (e.g., `backup-[topic]-[timestamp].reg`). Citadel strictly ensures that only valid `.reg` files are placed in this directory, providing a granular and reliable way to revert individual modifications if ever needed. Topics that do not modify the registry will bypass the backup creation entirely.
 
 ### 🛑 Session Interruptions
-If your session drops or you need to restart the audit mid-way, you can simply type `hardening` again. Citadel is strictly **idempotent**. The Pre-Flight Audit will naturally detect the fixes that were already applied as `✅ SEGURO` and will skip them safely. It will never duplicate configurations or double-backup untouched keys.
+If your session drops or you need to restart the audit mid-way, you can simply type `hardening` again. Citadel is strictly **idempotent**. The Pre-Flight Audit will naturally detect the fixes that were already applied as `✅ SECURE` and will skip them safely. It will never duplicate configurations or double-backup untouched keys.
 
 ### 💻 Command Interface
 

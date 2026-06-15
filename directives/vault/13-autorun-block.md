@@ -1,10 +1,10 @@
-# Tópico 13 — Bloquear AutoRun / AutoPlay
+# Topic 13 — Block AutoRun / AutoPlay
 
-**Categoria:** Segurança de Dispositivos Físicos
-**Risco para o usuário:** BAIXO — USBs e CDs precisarão ser abertos manualmente.
-**Risco de segurança (não aplicar):** ALTO — AutoRun é vetor clássico de infecção via USB (ex: pendrive infectado).
+**Category:** Physical Device Security
+**Risk for user:** LOW — USBs and CDs will need to be opened manually.
+**Security risk (if not applied):** HIGH — AutoRun is a classic infection vector via USB (e.g., infected pendrive).
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer` → `NoDriveTypeAutoRun`
 - `HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer` → `NoDriveTypeAutoRun`
 - `HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers` → `DisableAutoplay`
@@ -46,5 +46,5 @@ Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explo
 
 ## Remediation Hints
 
-- Se a chave HKLM falhar por permissão: usar `reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoDriveTypeAutoRun /t REG_DWORD /d 255 /f`.
-- O valor `255` equivale a `0xFF` — bloqueia todos os tipos de drive (fixo, removível, rede, CD, etc.).
+- If the HKLM key fails due to permissions: use `reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoDriveTypeAutoRun /t REG_DWORD /d 255 /f`.
+- The value `255` is equivalent to `0xFF` — blocks all drive types (fixed, removable, network, CD, etc.).

@@ -1,10 +1,10 @@
-# Tópico 04 — Hardening de Senha
+# Topic 04 — Password Hardening
 
-**Categoria:** Política de Acesso
-**Risco para o usuário:** ALTO — Lockout de 15 min após 5 tentativas erradas. Senhas complexas obrigatórias.
-**Risco de segurança (não aplicar):** ALTO — Senhas fracas são o vetor #1 de comprometimento.
+**Category:** Access Policy
+**Risk for user:** HIGH — 15 min lockout after 5 failed attempts. Complex passwords mandatory.
+**Security risk (if not applied):** HIGH — Weak passwords are the #1 compromise vector.
 
-**Chaves de Registro Afetadas:** Nenhuma diretamente (usa `secedit` para política de segurança local)
+**Affected Registry Keys:** None directly (uses `secedit` for local security policy)
 
 ---
 
@@ -51,13 +51,13 @@ gpupdate /force | Out-Null
 ## Rollback
 
 ```powershell
-# Restaurar política padrão do Windows (valores mínimos)
+# Restore default Windows policy (minimum values)
 net accounts /minpwlen:0 /maxpwage:unlimited /minpwage:0 /uniquepw:0 /lockoutthreshold:0
 ```
 
 ## Remediation Hints
 
-- Se `secedit /configure` falhar com erro de encoding: re-salvar o arquivo `.inf` com `Out-File -Encoding Default` (ANSI).
-- Se `gpupdate /force` travar: executar `gpupdate /force /boot` ou simplesmente ignorar — a política secedit já foi aplicada.
-- Alternativa direta: `net accounts /minpwlen:12 /lockoutthreshold:5 /lockoutduration:15 /lockoutwindow:15`.
-- **⚠️ Caminho com espaços:** `$env:TEMP` pode conter espaços e quebrar o `secedit`. Sempre use `[System.IO.Path]::Combine(...)` para gerar o path seguro (já feito no Apply acima).
+- If `secedit /configure` fails with encoding error: re-save the `.inf` file with `Out-File -Encoding Default` (ANSI).
+- If `gpupdate /force` hangs: run `gpupdate /force /boot` or simply ignore — the secedit policy is already applied.
+- Direct alternative: `net accounts /minpwlen:12 /lockoutthreshold:5 /lockoutduration:15 /lockoutwindow:15`.
+- **⚠️ Path with spaces:** `$env:TEMP` may contain spaces and break `secedit`. Always use `[System.IO.Path]::Combine(...)` to generate the safe path (already done in the Apply above).

@@ -1,12 +1,12 @@
-# Tópico 08 — DNS Seguro (1.1.1.1 Cloudflare)
+# Topic 08 — Secure DNS (1.1.1.1 Cloudflare)
 
-**Categoria:** Privacidade e Rede
-**Risco para o usuário:** MÉDIO — Se Cloudflare cair, a internet para. Em redes corporativas, quebra resolução de domínios internos.
-**Risco de segurança (não aplicar):** MÉDIO — DNS padrão do ISP pode ser interceptado (DNS Spoofing).
+**Category:** Privacy and Network
+**Risk for user:** MEDIUM — If Cloudflare goes down, the internet stops. In corporate networks, breaks internal domain resolution.
+**Security risk (if not applied):** MEDIUM — Default ISP DNS can be intercepted (DNS Spoofing).
 
-**Chaves de Registro Afetadas:** Nenhuma (gerenciado por cmdlets de rede)
+**Affected Registry Keys:** None (managed by network cmdlets)
 
-> **⚠️ SKIP AUTOMÁTICO EM DOMÍNIO**: Se o Pre-Flight detectar que a máquina está em Active Directory (`PartOfDomain = True`), este tópico deve ser marcado como `SKIP_DOMAIN` e não deve ser aplicado sem confirmação explícita do usuário.
+> **⚠️ AUTOMATIC SKIP IN DOMAIN**: If the Pre-Flight detects that the machine is in an Active Directory (`PartOfDomain = True`), this topic must be marked as `SKIP_DOMAIN` and should not be applied without explicit user confirmation.
 
 ---
 
@@ -31,5 +31,5 @@ Get-NetAdapter | Where-Object Status -eq 'Up' | Set-DnsClientServerAddress -Rese
 
 ## Remediation Hints
 
-- Se `Set-DnsClientServerAddress` falhar: usar `netsh interface ip set dns "[nome_adapter]" static 1.1.1.1` para cada adaptador ativo.
-- Para obter os nomes dos adaptadores: `Get-NetAdapter | Where-Object Status -eq 'Up' | Select-Object Name`.
+- If `Set-DnsClientServerAddress` fails: use `netsh interface ip set dns "[adapter_name]" static 1.1.1.1` for each active adapter.
+- To get the adapter names: `Get-NetAdapter | Where-Object Status -eq 'Up' | Select-Object Name`.

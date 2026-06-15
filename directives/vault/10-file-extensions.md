@@ -1,10 +1,10 @@
-# Tópico 10 — Mostrar Extensões de Arquivo
+# Topic 10 — Show File Extensions
 
-**Categoria:** Prevenção de Engenharia Social
-**Risco para o usuário:** NENHUM — Apenas mudança visual.
-**Risco de segurança (não aplicar):** MÉDIO — Usuário pode abrir `documento.pdf.exe` pensando ser um PDF.
+**Category:** Social Engineering Prevention
+**Risk for user:** NONE — Visual change only.
+**Security risk (if not applied):** MEDIUM — User may open `document.pdf.exe` thinking it is a PDF.
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced` → `HideFileExt`
 
 ---
@@ -32,5 +32,5 @@ Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
 
 ## Remediation Hints
 
-- O `Stop-Process -Name explorer` vai fechar e reabrir a barra de tarefas brevemente — isso é esperado e necessário para aplicar a mudança visual.
-- Se o Explorer não reiniciar sozinho: executar `Start-Process explorer` manualmente.
+- The `Stop-Process -Name explorer` will close and briefly reopen the taskbar — this is expected and necessary to apply the visual change.
+- If Explorer does not restart on its own: manually run `Start-Process explorer`.

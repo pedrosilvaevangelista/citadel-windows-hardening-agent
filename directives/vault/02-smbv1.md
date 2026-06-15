@@ -1,10 +1,10 @@
-# Tópico 02 — SMBv1 Protocol
+# Topic 02 — SMBv1 Protocol
 
-**Categoria:** Protocolos Legados
-**Risco para o usuário:** BAIXO — NAS/impressoras com mais de 15 anos podem perder conexão.
-**Risco de segurança (não aplicar):** CRÍTICO — Vetor do ataque WannaCry/EternalBlue.
+**Category:** Legacy Protocols
+**Risk for user:** LOW — NAS/printers older than 15 years may lose connection.
+**Security risk (if not applied):** CRITICAL — WannaCry/EternalBlue attack vector.
 
-**Chaves de Registro Afetadas:**
+**Affected Registry Keys:**
 - `HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters` → `SMB1`
 
 ---
@@ -35,6 +35,6 @@ Enable-WindowsOptionalFeature -Online -FeatureName "SMB1Protocol" -NoRestart -Er
 
 ## Remediation Hints
 
-- Se `Get-WindowsOptionalFeature` falhar (serviço CBS não disponível): use `dism /online /Disable-Feature /FeatureName:SMB1Protocol /NoRestart` como alternativa.
-- Se `Set-SmbServerConfiguration` retornar erro de permissão: forçar via registro é suficiente — o check de registry já valida isso.
-- **⚠️ Atenção pós-apply:** `Disable-WindowsOptionalFeature` pode retornar `RestartNeeded = True`. Nesse caso, o Check vai retornar falso mesmo com a configuração correta. Avise o usuário que o status só será confirmado após reboot.
+- If `Get-WindowsOptionalFeature` fails (CBS service unavailable): use `dism /online /Disable-Feature /FeatureName:SMB1Protocol /NoRestart` as an alternative.
+- If `Set-SmbServerConfiguration` returns permission error: forcing via registry is enough — the registry check already validates this.
+- **⚠️ Post-apply warning:** `Disable-WindowsOptionalFeature` may return `RestartNeeded = True`. In this case, the Check will return false even with the correct configuration. Warn the user that the status will only be confirmed after reboot.
